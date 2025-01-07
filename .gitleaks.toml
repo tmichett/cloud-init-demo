@@ -3,4 +3,5 @@
   paths = [
     # Ignore anything with cloud in the path
     '''cloud''',
+    '''README''',
   ]
