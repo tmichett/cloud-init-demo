@@ -1,0 +1,6 @@
+[allowlist]
+  description = "Global Allowlist"
+  paths = [
+    # Ignore anything with cloud in the path
+    '''cloud''',
+  ]
