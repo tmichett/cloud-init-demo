@@ -34,3 +34,26 @@ When attached, the VM will automatically identify the cloud-init settings becaus
   </devices>
 </domain>
 ```
+
+### Comment about the User Module for Cloud-Init
+
+Just like Ansible, the **cloud-init** module for users supports the `passwd` field. This password must be encrypted and hashed and cannot be plaintext. The password hash can be generated with **mkpasswd**.
+
+```
+mkpasswd --method=SHA-512 --rounds=4096
+Password:
+$6$rounds=4096$tg6i.nQqvEMdYc1t$.ev9vuas4e6/l/xImYiWLCtLazpIR6gPHUT2W4YVqEm5QAdN66HVzqSbHUTKmV6XBv8PRPoeXAuk0X0y66QgB/
+```
+
+It will prompt for the password and spit out the password hash which can be copied and used in the cloud-init configuration. An example has been shown below. In this instance, the password of **redhat** has been hashed.
+
+user-data
+```
+#cloud-config
+users:
+- name: travis
+  passwd: $6$rounds=4096$tg6i.nQqvEMdYc1t$.ev9vuas4e6/l/xImYiWLCtLazpIR6gPHUT2W4YVqEm5QAdN66HVzqSbHUTKmV6XBv8PRPoeXAuk0X0y66QgB/
+  lock_passwd: false
+```
+
+
