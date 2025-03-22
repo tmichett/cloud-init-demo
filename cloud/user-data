@@ -30,6 +30,7 @@ runcmd:
 - firewall-cmd --zone=external --add-interface eth1 --permanent
 - firewall-cmd --zone=external --add-interface eth1
 - firewall-cmd --zone=public --add-masquerade
+- firewall-cmd --zone=public --add-masquerade --permanent
 - firewall-cmd --reload
 
 
