@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<domain type="kvm">
+  <name>bastion</name>
+  <memory unit="GiB">2</memory>
+  <currentMemory unit="GiB">2</currentMemory>
+  <clock offset="utc"/>
+  <vcpu>2</vcpu>
+  <features>
+    <acpi/>
+    <apic/>
+    <pae/>
+  </features>
+  <os>
+    <type machine='q35'>hvm</type>
+    <boot dev='hd'/>
+    <bootmenu enable='no'/>
+  </os>
+  <cpu mode='host-model' check='none'/>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>restart</on_crash>
+  <devices>
+    <graphics type='spice' port='-1' autoport='yes' listen='127.0.0.1'>
+      <listen type='address' address='127.0.0.1'/>
+    </graphics>
+    <interface type="bridge">
+      <source bridge="privbr0"/>
+      <mac address="52:54:00:00:FA:FE"/>
+      <model type="virtio"/>
+    </interface>
+    <interface type="bridge">
+      <source bridge="br0"/>
+      <mac address="52:54:00:01:FC:RHT_ENROLLMENT_HEX"/>
+      <model type="virtio"/>
+    </interface>
+    <input bus="ps2" type="mouse"/>
+    <serial type="pty">
+      <target port="0"/>
+    </serial>
+    <video>
+      <model type='virtio' heads='1' primary='yes'/>
+      <alias name='video0'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/>
+    </video>
+    <disk type='file' device='cdrom'>
+      <driver name='qemu' type='raw'/>
+      <source file='/home/kiosk/cloud/bastion-cidata.iso'/>
+      <target dev='sdb' bus='sata'/>
+      <readonly/>
+      <address type='drive' controller='0' bus='0' target='0' unit='1'/>
+    </disk>
+    <disk device="disk" type="file">
+      <target bus="virtio" dev="sda"/>
+      <source file="/var/lib/libvirt/images/rh358-bastion-sda.qcow2"/>
+      <driver name="qemu" type="qcow2"/>
+    </disk>
+  </devices>
+</domain>

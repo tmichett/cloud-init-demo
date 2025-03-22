@@ -22,3 +22,13 @@ write_files:
     travis ALL=(ALL) NOPASSWD:ALL
   path: /etc/sudoers.d/90-travis-sudo
   permissions: '0600'
+
+## Fix Firewall and Interfaces in Zones
+runcmd:
+- firewall-cmd --zone=public --remove-interface eth1 --permanent
+- firewall-cmd --zone=public --remove-interface eth1
+- firewall-cmd --zone=external --add-interface eth1 --permanent
+- firewall-cmd --zone=external --add-interface eth1
+- firewall-cmd --reload
+
+
