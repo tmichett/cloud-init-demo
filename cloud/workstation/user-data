@@ -1,0 +1,30 @@
+#cloud-config
+users:
+- name: travis
+  passwd: $6$rounds=4096$tg6i.nQqvEMdYc1t$.ev9vuas4e6/l/xImYiWLCtLazpIR6gPHUT2W4YVqEm5QAdN66HVzqSbHUTKmV6XBv8PRPoeXAuk0X0y66QgB/
+  lock_passwd: false
+- default
+- travis2
+password: password
+chpasswd:
+  expire: False
+
+write_files:
+- content: |
+    # This is a comment in a dummy content file
+
+    I am the content you are looking for ...
+  path: /etc/content_file.txt
+  permissions: '0644'
+
+- content: |
+    # Adding me to SUDOERS file
+    travis ALL=(ALL) NOPASSWD:ALL
+  path: /etc/sudoers.d/90-travis-sudo
+  permissions: '0600'
+
+## Fix RHT Version
+runcmd:
+- sed -i "/^RHT_VERSION_LOCK=/c\RHT_VERSION_LOCK=\">=9.4,<9.5\"" /etc/rht
+
+
