@@ -1,0 +1,36 @@
+#cloud-config
+users:
+- name: travis
+  passwd: $6$rounds=4096$tg6i.nQqvEMdYc1t$.ev9vuas4e6/l/xImYiWLCtLazpIR6gPHUT2W4YVqEm5QAdN66HVzqSbHUTKmV6XBv8PRPoeXAuk0X0y66QgB/
+  lock_passwd: false
+- default
+- travis2
+password: password
+chpasswd:
+  expire: False
+
+write_files:
+- content: |
+    # This is a comment in a dummy content file
+
+    I am the content you are looking for ...
+  path: /etc/content_file.txt
+  permissions: '0644'
+
+- content: |
+    # Adding me to SUDOERS file
+    travis ALL=(ALL) NOPASSWD:ALL
+  path: /etc/sudoers.d/90-travis-sudo
+  permissions: '0600'
+
+## Fix Firewall and Interfaces in Zones
+runcmd:
+- firewall-cmd --zone=public --remove-interface eth1 --permanent
+- firewall-cmd --zone=public --remove-interface eth1
+- firewall-cmd --zone=external --add-interface eth1 --permanent
+- firewall-cmd --zone=external --add-interface eth1
+- firewall-cmd --zone=public --add-masquerade
+- firewall-cmd --zone=public --add-masquerade --permanent
+- firewall-cmd --reload
+
+
